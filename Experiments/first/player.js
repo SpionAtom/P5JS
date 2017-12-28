@@ -14,6 +14,7 @@ class Player {
     this.jumping = 0;
     this.maxJumping = 50;
     this.jumpHeight = 60;
+    this.jumpFactor = 1;
   }
   
   keysUpdate() {
@@ -27,9 +28,12 @@ class Player {
     }
     if (keyIsDown(this.keyUp)) {
       console.log("up pressed");
+      this.jumpFactor++;
+      
     }
     if (keyIsDown(this.keyDown)) {
       console.log("down pressed");
+      this.jumpFactor--;
     }
   }
   
@@ -42,9 +46,15 @@ class Player {
     this.vy *= 0.9;
     this.x += this.vx;
     //this.y += this.vy;
+    this.jumpFactor *= 0.99;
+    if (abs(this.jumpFactor) < 1) {
+      this.jumpFactor = Math.sign(this.jumpFactor);
+    }
+
+
     this.jumping = (this.jumping + 1) % this.maxJumping;
-    console.log(this.jumping);
-    this.y = game.ground - this.radius - sin(PI * (this.jumping / this.maxJumping)) * this.jumpHeight;
+    console.log(this.jumpFactor);
+    this.y = game.ground - this.radius - sin(PI * (this.jumping / this.maxJumping)) * this.jumpHeight * (this.jumpFactor + 100) / 100;
     this.x = constrain(this.x, this.radius, xr - this.radius);
 
     this.keysUpdate();
