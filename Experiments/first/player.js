@@ -28,12 +28,12 @@ class Player {
     }
     if (keyIsDown(this.keyUp)) {
       console.log("up pressed");
-      this.jumpFactor++;
+      this.jumpFactor+=4;
       
     }
     if (keyIsDown(this.keyDown)) {
       console.log("down pressed");
-      this.jumpFactor--;
+      this.jumpFactor-=4;
     }
   }
   
@@ -46,7 +46,7 @@ class Player {
     this.vy *= 0.9;
     this.x += this.vx;
     //this.y += this.vy;
-    this.jumpFactor *= 0.99;
+    this.jumpFactor *= 0.95;
     if (abs(this.jumpFactor) < 1) {
       this.jumpFactor = Math.sign(this.jumpFactor);
     }
