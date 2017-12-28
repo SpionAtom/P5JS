@@ -11,6 +11,9 @@ class Player {
     this.keyRight = keyRight;
     this.keyUp = keyUp;
     this.keyDown = keyDown;
+    this.jumping = 0;
+    this.maxJumping = 50;
+    this.jumpHeight = 60;
   }
   
   keysUpdate() {
@@ -38,7 +41,10 @@ class Player {
     this.vx *= 0.9;
     this.vy *= 0.9;
     this.x += this.vx;
-    this.y += this.vy;
+    //this.y += this.vy;
+    this.jumping = (this.jumping + 1) % this.maxJumping;
+    console.log(this.jumping);
+    this.y = game.ground - this.radius - sin(PI * (this.jumping / this.maxJumping)) * this.jumpHeight;
     this.x = constrain(this.x, this.radius, xr - this.radius);
 
     this.keysUpdate();

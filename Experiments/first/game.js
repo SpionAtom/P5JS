@@ -14,16 +14,18 @@ class Game {
   display(s) {
     
     s.clear();
+    // floor
     s.background(155, 175, 255);
     s.fill(55, 155, 55);
     s.strokeWeight(0);
     s.rect(0, this.ground, xr, yr - this.ground);
     
+
+    // title
     s.strokeWeight(0);
     s.fill(255);
-    s.textSize(18);
-	
-    var title = "GAME";    
+    s.textSize(18);	
+    var title = "Bouncing Ball";    
     s.strokeWeight(0);
     s.stroke(255);
 	  s.text(title, xr - s.textWidth(title), yr - 1);
