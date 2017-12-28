@@ -1,6 +1,7 @@
 const tilesAmount = 5;
 var gridX, gridY, tileSize;
 var tiles = [];
+var lidTiles;
 
 function setup() {
   for (var i = 0; i < tilesAmount; i++) {
@@ -8,6 +9,7 @@ function setup() {
       tiles.push(new Tile(i, j));
     }
   }
+  lidTiles = tilesAmount * tilesAmount;
   createCanvas(windowWidth, windowHeight);
   windowResized();
 }
@@ -33,19 +35,25 @@ function invertTile(i) {
   var vy = floor(i / tilesAmount);
 
   tiles[i].s = !tiles[i].s;
+  lidTiles += tiles[i].s ? 1 : -1;
 
   if (vx > 0) {
     tiles[i - 1].s = !tiles[i - 1].s;
+    lidTiles += tiles[i - 1].s ? 1 : -1;
   }
   if (vx < tilesAmount - 1) {
     tiles[i + 1].s = !tiles[i + 1].s;
+    lidTiles += tiles[i + 1].s ? 1 : -1;
   }
   if (vy > 0) {
     tiles[i - tilesAmount].s = !tiles[i - tilesAmount].s;
+    lidTiles += tiles[i - tilesAmount].s ? 1 : -1;
   }
   if (vy < tilesAmount - 1) {
     tiles[i + tilesAmount].s = !tiles[i + tilesAmount].s;
+    lidTiles += tiles[i + tilesAmount].s ? 1 : -1;
   }
+  console.log(lidTiles);
 }
 
 function windowResized() {
