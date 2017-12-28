@@ -16,9 +16,11 @@ class Player {
   keysUpdate() {
     if (keyIsDown(this.keyLeft)) {
       console.log("left pressed");
+      this.ax = -0.5;
     }
     if (keyIsDown(this.keyRight)) {
       console.log("right pressed");
+      this.ax = 0.5;
     }
     if (keyIsDown(this.keyUp)) {
       console.log("up pressed");
@@ -29,6 +31,16 @@ class Player {
   }
   
   update() {
+    this.ax *= 0.9;
+    this.ay *= 0.9;
+    this.vx += this.ax;    
+    this.vy += this.ay;
+    this.vx *= 0.9;
+    this.vy *= 0.9;
+    this.x += this.vx;
+    this.y += this.vy;
+    this.x = constrain(this.x, this.radius, xr - this.radius);
+
     this.keysUpdate();
   }
   
