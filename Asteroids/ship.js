@@ -1,15 +1,19 @@
 var anglespeed = 0.1;
+var accspeed = 0.1;
+var maxacc = 1.0;
+var accdamp = 0.95;
 
 class Ship extends Entity {
 
     constructor(pos, vel, acc, keyLeft, keyRight, keyUp, keyDown) {
         super(pos, vel, acc);        
         this.radius = 32;
-        this.angle = PI / 4;
+        this.angle = 1.5 * PI;
         this.keyLeft = keyLeft;
         this.keyRight = keyRight;
         this.keyUp = keyUp;
         this.keyDown = keyDown;
+        console.log('cons ship ' + pos);
         
     }
 
@@ -21,28 +25,27 @@ class Ship extends Entity {
     keysUpdate() {
         if (keyIsDown(this.keyLeft)) {
           console.log("left pressed");
-          this.angle = (this.angle + anglespeed) % (TWO_PI);
+          this.angle = (this.angle - anglespeed) % (TWO_PI);
         }
         if (keyIsDown(this.keyRight)) {
           console.log("right pressed");
-          this.angle = (this.angle - anglespeed) % (TWO_PI);
+          this.angle = (this.angle + anglespeed) % (TWO_PI);
         }
         if (keyIsDown(this.keyUp)) {
-          console.log("up pressed");
-          this.jumpFactor+=4;
+          console.log("up pressed");      
           
         }
         if (keyIsDown(this.keyDown)) {
           console.log("down pressed");
-          this.jumpFactor-=4;
+          this.acc;
         }
       }
 
 
     draw(s) {
-        console.log(this.pos.x)        ;
         s.push();
-        //s.translate(this.pos.x, this.pos.y);
+        s.translate(this.pos.x, this.pos.y);
+        s.rotate(this.angle);
         s.stroke(255, 155, 55);
         s.noFill();
         var shipPolarList = [];
