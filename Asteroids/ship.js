@@ -1,17 +1,18 @@
 var anglespeed = 0.1;
-var thrustspeed = 0.1;
-var maxthrust = 5.0;
-
+var thrustspeed = 0.001;
+var maxthrust = 1.0;
 class Ship extends Entity {
 
-    constructor(pos, heading, thrust, damping, keyLeft, keyRight, keyUp, keyDown) {
+    constructor(pos, heading, thrust, damping, keyLeft, keyRight, keyUp, keyDown, keyShoot) {
         super(pos, heading, thrust, damping);        
         this.radius = 10;
         this.keyLeft = keyLeft;
         this.keyRight = keyRight;
         this.keyUp = keyUp;
         this.keyDown = keyDown;
-        this.thrusting = false; // for visual key feedback
+        this.keyShoot = keyShoot;
+        this.shooting = false;
+        this.shots = [];   
         
     }
 
@@ -19,6 +20,8 @@ class Ship extends Entity {
         super.update();
         this.boundaryLoop(this.radius);
         this.keysUpdate();
+
+         
     }
 
     keysUpdate() {
@@ -42,9 +45,23 @@ class Ship extends Entity {
           //console.log("down pressed");
           this.thrust -= thrustspeed;
           if (this.thrust < 0) this.thrust = 0;          
-        }          
+        }
+        if (keyIsDown(this.keyShoot) && !this.shooting) {
+          this.shooting = true;
+          this.shoot();
+          //console.log('shoot');
+        }
+        if (!keyIsDown(this.keyShoot) && this.shooting) {
+          this.shooting = false;
+        }
         
       }
+
+    shoot() {
+      var heading = this.heading;
+      var pos = createVector(this.pos.x + cos(heading) * this.radius, this.pos.y + sin(heading) * this.radius);
+      this.shots.push(new Shot(pos, heading));
+    }
 
 
     draw(s) {
@@ -70,9 +87,9 @@ class Ship extends Entity {
           s.triangle(-this.radius, 0, -this.radius * 0.40, this.radius * 0.25, -this.radius * 0.40, -this.radius * 0.25);
           
         }
-
         s.pop();
-        
+
+        this.shots.forEach(shot => shot.draw(s));
       }
     
 }
