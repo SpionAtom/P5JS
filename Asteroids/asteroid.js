@@ -5,6 +5,7 @@ class Asteroid extends Entity {
         var damping = 1;
         super(pos, heading, thrust, damping);
         this.type = type;
+        this.points = Asteroid.Stats[type].points;
         this.thrusting = false;
         this.vel = this.vel.add(p5.Vector.fromAngle(this.heading).mult(thrust));
         this.verticesAmount = floor(random(4, 8));

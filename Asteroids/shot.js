@@ -16,7 +16,6 @@ class Shot extends Entity {
     }
 
     hitAsteroid(a) {
-        console.log(this.pos.dist(a.pos));
         return (this.pos.dist(a.pos) <= a.radius);
     }
 

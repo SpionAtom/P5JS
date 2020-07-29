@@ -12,7 +12,11 @@ class Ship extends Entity {
         this.keyDown = keyDown;
         this.keyShoot = keyShoot;
         this.shooting = false;
-        this.shots = [];   
+        this.shots = [];
+        this.lives = 3;
+        this.score = 0;
+        this.playerNum = 0;
+        this.scoreLivesCounter = 0; //new live every 10000 score   
         
     }
 
@@ -57,6 +61,15 @@ class Ship extends Entity {
         
       }
 
+    increaseScore(score) {
+      this.score += score;
+      this.scoreLivesCounter += score;
+      if (this.scoreLivesCounter > 10000) {
+        this.lives++;
+        this.scoreLivesCounter = (this.scoreLivesCounter % 10000);
+      }
+    }
+
     shoot() {
       var heading = this.heading;
       var pos = createVector(this.pos.x + cos(heading) * this.radius, this.pos.y + sin(heading) * this.radius);
@@ -69,16 +82,8 @@ class Ship extends Entity {
         s.translate(this.pos.x, this.pos.y);
         s.rotate(this.heading);
         s.stroke(255);                
-        s.fill(0,0,0,0);  //bc noFill is not working, so I set the alpha to 0      
-        var shipPolarList = [];
-        shipPolarList.push({a: 0.0, r: 1}, {a: 3/4.0 * PI, r: 1}, {a: 3/4.0 * PI, r: 0.5}, {a: 5/4.0 * PI, r: 0.5}, {a: 5/4.0 * PI, r: 1});
-        s.beginShape();
-        for (var i = 0; i < shipPolarList.length; i++) {
-            var x = cos(shipPolarList[i].a) * this.radius * shipPolarList[i].r;
-            var y = sin(shipPolarList[i].a) * this.radius * shipPolarList[i].r;
-            s.vertex(x, y);
-        }
-        s.endShape(CLOSE);
+        s.fill(0,0,0,0);  //bc noFill is not working, so I set the alpha to 0
+        this.drawShipShape(s, this.radius);      
 
         // draw the thrust
         s.fill(255);
@@ -90,6 +95,41 @@ class Ship extends Entity {
         s.pop();
 
         this.shots.forEach(shot => shot.draw(s));
+
+        // HUD
+        
+        // score        
+        s.textSize(16);        
+        s.textFont(myFont);
+        s.fill(255);
+        s.stroke(255);
+        s.text(('000000000' + this.score).substr(-6), 15, 15 + 16 * this.playerNum);
+
+        // lives        
+        s.fill(0, 0, 0, 0);
+        for (var i = 0; i < min(this.lives, 5); i++) {          
+          s.push();
+          
+          s.translate(20 + i * 10, 25 + 16 * this.playerNum);
+          s.rotate(TWO_PI * 3 / 4);
+          this.drawShipShape(s, 6);          
+          s.pop();
+        }
+        
+        
+      }
+
+      drawShipShape(s, r) {
+        var shipPolarList = [];
+        shipPolarList.push({a: 0.0, r: 1}, {a: 3/4.0 * PI, r: 1}, {a: 3/4.0 * PI, r: 0.5}, {a: 5/4.0 * PI, r: 0.5}, {a: 5/4.0 * PI, r: 1});
+        s.beginShape();
+        for (var i = 0; i < shipPolarList.length; i++) {
+            var x = cos(shipPolarList[i].a) * r * shipPolarList[i].r;
+            var y = sin(shipPolarList[i].a) * r * shipPolarList[i].r;
+            s.vertex(x, y);
+        }
+        s.endShape(CLOSE);
+
       }
     
 }
