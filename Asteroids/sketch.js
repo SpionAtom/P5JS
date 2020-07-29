@@ -1,13 +1,14 @@
 function preload() {
-  myFont = loadFont('fonts/Baloo2-Regular.ttf');
+  myFont = loadFont('fonts/VT323-Regular.ttf');
 }
 
 function setup() {  
 
-  createCanvas(xr, yr);
+  createCanvas(xr, yr);  
   noSmooth();
   screen = createGraphics(xr, yr, WEBGL);
   screen.noSmooth();
+  screen.translate(-screen.width / 2, -screen.height / 2, 0); // move origin to top left, otherwise it is in the center bc of WEBGL.
 
   frameRate(fps);
   game = new Game(this);
@@ -19,6 +20,7 @@ function setup() {
 function draw() {
 
   game.update();
+  background(127);
   drawScreen(screen);
   image(screen, screenStretchedX, screenStretchedY, screenStretchedWidth, screenStretchedHeight);
 }
@@ -45,5 +47,7 @@ function onWindowResize() {
 }
 
 function drawScreen(s) {
+  push();
   game.display(s);
+  pop();
 }

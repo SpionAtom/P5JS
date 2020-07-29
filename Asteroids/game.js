@@ -1,38 +1,44 @@
+/* Original Asteroid text on the arcade (Atari arcade machine from 1979):
+    STRATEGY:
+    * Destroy rocks and saucer for points   * Hyperspace can be used in emergencies but
+    * Avoid being destroyed by the rocks      there is a chance of explosion on reentry
+        or saucer fire                      * An extra ship is given for each
+                                                10,000 points scored
+
+        In a two player game each player alternates until his supply of ships is exhausted
+
+    (big rock)    (medium rock)   (small rock)       (big saucer)     (small saucer)
+     20 POINTS     50 POINTS       100 POINTS         200 POINTS       1000 POINTS
+
+*/
 class Game {
   
   
-  constructor(p) {
-    //this.ground = yr - 25;
-    //this.p = p;
-    //this.player1 = new Player(xr / 2, 120, LEFT_ARROW, RIGHT_ARROW, UP_ARROW, DOWN_ARROW)
-    
+  constructor(p) { 
+    this.p = p;
 
-    var pos = createVector(0, 0);
-    var vel = createVector(0, 0);
-    var acc = createVector(0, 0);
-    this.ship = new Ship(pos, vel, acc, LEFT_ARROW, RIGHT_ARROW, UP_ARROW, DOWN_ARROW);
-    
-
-
+    var pos = createVector(xr / 2, yr / 2);
+    var heading = 1.5 * PI; // pointing up
+    var thrust = 0;
+    var damping = 0.99;
+    this.ship = new Ship(pos, heading, thrust, damping, LEFT_ARROW, RIGHT_ARROW, UP_ARROW, DOWN_ARROW);
 
   }
   
   update() {
-    this.ship.update();
+    this.ship.update();    
   }
   
   display(s) {
-    s.background(127);
+    s.clear();
+    s.background(0);
 
-    // title
-    s.strokeWeight(0);
-    s.fill(255);
-    s.textSize(18);	
-    var title = "Asteroids";
+    // title    
+    s.textSize(16);	
+    var title = "2020 SPION ATOM INC";
     s.textFont(myFont);
-    s.strokeWeight(0);
     s.stroke(255);
-    s.text(title, -s.textWidth(title) / 2, -yr / 2 + s.textSize());
+    s.text(title, (xr - s.textWidth(title)) / 2, yr);
     this.ship.draw(s);	
   }
 }

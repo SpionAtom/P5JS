@@ -1,5 +1,5 @@
-var xr = 320;
-var yr = 240;
+var xr = 256;
+var yr = 231;
 var fps = 50;
 var screen;
 var screenRatio = xr / yr;
